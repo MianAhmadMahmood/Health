@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const servicesList = [
   'Injection at Home',
@@ -26,14 +26,27 @@ export default function BookingPage() {
     time: '',
   });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    setIsLoggedIn(!!user);
+  }, []);
+
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Booking Submitted:', formData);
-    alert('Your booking has been submitted!');
+
+    if (!isLoggedIn) {
+      alert('❌ Please login first to make a booking.');
+      return;
+    }
+
+    console.log('✅ Booking Submitted:', formData);
+    alert('✅ Your booking has been submitted!');
     setFormData({ name: '', email: '', service: '', date: '', time: '' });
   };
 
@@ -53,7 +66,7 @@ export default function BookingPage() {
               value={formData.name}
               required
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
               placeholder="John Doe"
             />
           </div>
@@ -66,7 +79,7 @@ export default function BookingPage() {
               value={formData.email}
               required
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
               placeholder="john@example.com"
             />
           </div>
@@ -78,11 +91,13 @@ export default function BookingPage() {
               value={formData.service}
               required
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
             >
               <option value="">-- Select a Service --</option>
-              {servicesList.map((service, index) => (
-                <option key={index} value={service}>{service}</option>
+              {servicesList.map((service, idx) => (
+                <option key={idx} value={service}>
+                  {service}
+                </option>
               ))}
             </select>
           </div>
@@ -96,7 +111,7 @@ export default function BookingPage() {
                 value={formData.date}
                 required
                 onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
               />
             </div>
             <div className="w-full">
@@ -107,7 +122,7 @@ export default function BookingPage() {
                 value={formData.time}
                 required
                 onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
               />
             </div>
           </div>
