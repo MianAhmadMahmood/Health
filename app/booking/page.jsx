@@ -21,6 +21,8 @@ export default function BookingPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    contactNumber: '',
+    address: '',
     service: '',
     date: '',
     time: '',
@@ -41,13 +43,21 @@ export default function BookingPage() {
     e.preventDefault();
 
     if (!isLoggedIn) {
-      alert('❌ Please login first to make a booking.');
+      window.location.href = '/login';
       return;
     }
 
     console.log('✅ Booking Submitted:', formData);
     alert('✅ Your booking has been submitted!');
-    setFormData({ name: '', email: '', service: '', date: '', time: '' });
+    setFormData({
+      name: '',
+      email: '',
+      contactNumber: '',
+      address: '',
+      service: '',
+      date: '',
+      time: '',
+    });
   };
 
   return (
@@ -58,6 +68,7 @@ export default function BookingPage() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Full Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Full Name</label>
             <input
@@ -71,6 +82,7 @@ export default function BookingPage() {
             />
           </div>
 
+          {/* Email Address */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Email Address</label>
             <input
@@ -84,6 +96,35 @@ export default function BookingPage() {
             />
           </div>
 
+          {/* Contact Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Contact Number</label>
+            <input
+              type="text"
+              name="contactNumber"
+              value={formData.contactNumber}
+              required
+              onChange={handleChange}
+              className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
+              placeholder="+92 300 1234567"
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              required
+              onChange={handleChange}
+              className="mt-1 w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-emerald-500"
+              placeholder="House #, Street, City"
+            />
+          </div>
+
+          {/* Service */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Service</label>
             <select
@@ -102,6 +143,7 @@ export default function BookingPage() {
             </select>
           </div>
 
+          {/* Date & Time */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">Date</label>
@@ -127,6 +169,7 @@ export default function BookingPage() {
             </div>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md transition duration-300"
